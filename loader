@@ -1,0 +1,159 @@
+-- LOADER - XURRAS SCRIPT
+-- Tela de carregamento com música e progresso
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+
+local player = Players.LocalPlayer
+
+-- Configurações
+local MUSIC_ID = "rbxassetid://136325435414595"
+local LOADER_DURATION = 8
+
+-- Criar GUI
+local LoaderGui = Instance.new("ScreenGui")
+LoaderGui.Name = "XurrasLoader"
+LoaderGui.Parent = game.CoreGui
+LoaderGui.ResetOnSpawn = false
+LoaderGui.DisplayOrder = 999999
+
+-- Background
+local FullBackground = Instance.new("Frame")
+FullBackground.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
+FullBackground.BorderSizePixel = 0
+FullBackground.Size = UDim2.new(1, 0, 1, 0)
+FullBackground.Parent = LoaderGui
+
+-- Container
+local LoaderContainer = Instance.new("Frame")
+LoaderContainer.BackgroundTransparency = 1
+LoaderContainer.Position = UDim2.new(0.5, -250, 0.5, -150)
+LoaderContainer.Size = UDim2.new(0, 500, 0, 300)
+LoaderContainer.Parent = FullBackground
+
+-- Logo
+local LogoFrame = Instance.new("Frame")
+LogoFrame.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+LogoFrame.BorderSizePixel = 0
+LogoFrame.Position = UDim2.new(0.5, -60, 0, 0)
+LogoFrame.Size = UDim2.new(0, 120, 0, 120)
+LogoFrame.Parent = LoaderContainer
+
+local LogoCorner = Instance.new("UICorner")
+LogoCorner.CornerRadius = UDim.new(0, 30)
+LogoCorner.Parent = LogoFrame
+
+local LogoIcon = Instance.new("ImageLabel")
+LogoIcon.BackgroundTransparency = 1
+LogoIcon.Position = UDim2.new(0.5, -40, 0.5, -40)
+LogoIcon.Size = UDim2.new(0, 80, 0, 80)
+LogoIcon.Image = "rbxassetid://14874672027"
+LogoIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+LogoIcon.Parent = LogoFrame
+
+-- Título
+local LoaderTitle = Instance.new("TextLabel")
+LoaderTitle.BackgroundTransparency = 1
+LoaderTitle.Position = UDim2.new(0, 0, 0, 135)
+LoaderTitle.Size = UDim2.new(1, 0, 0, 40)
+LoaderTitle.Font = Enum.Font.GothamBold
+LoaderTitle.Text = "XURRAS SCRIPT"
+LoaderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+LoaderTitle.TextSize = 32
+LoaderTitle.Parent = LoaderContainer
+
+-- Status
+local StatusLabel = Instance.new("TextLabel")
+StatusLabel.BackgroundTransparency = 1
+StatusLabel.Position = UDim2.new(0, 0, 0, 175)
+StatusLabel.Size = UDim2.new(1, 0, 0, 25)
+StatusLabel.Font = Enum.Font.Gotham
+StatusLabel.Text = "Inicializando..."
+StatusLabel.TextColor3 = Color3.fromRGB(180, 180, 200)
+StatusLabel.TextSize = 16
+StatusLabel.Parent = LoaderContainer
+
+-- Barra BG
+local ProgressBarBG = Instance.new("Frame")
+ProgressBarBG.BackgroundColor3 = Color3.fromRGB(30, 35, 50)
+ProgressBarBG.BorderSizePixel = 0
+ProgressBarBG.Position = UDim2.new(0, 50, 0, 220)
+ProgressBarBG.Size = UDim2.new(1, -100, 0, 12)
+ProgressBarBG.Parent = LoaderContainer
+
+local ProgressBarCorner = Instance.new("UICorner")
+ProgressBarCorner.CornerRadius = UDim.new(1, 0)
+ProgressBarCorner.Parent = ProgressBarBG
+
+-- Barra
+local ProgressBar = Instance.new("Frame")
+ProgressBar.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+ProgressBar.BorderSizePixel = 0
+ProgressBar.Size = UDim2.new(0, 0, 1, 0)
+ProgressBar.Parent = ProgressBarBG
+
+local ProgressBarFillCorner = Instance.new("UICorner")
+ProgressBarFillCorner.CornerRadius = UDim.new(1, 0)
+ProgressBarFillCorner.Parent = ProgressBar
+
+-- Porcentagem
+local PercentLabel = Instance.new("TextLabel")
+PercentLabel.BackgroundTransparency = 1
+PercentLabel.Position = UDim2.new(0, 0, 0, 245)
+PercentLabel.Size = UDim2.new(1, 0, 0, 30)
+PercentLabel.Font = Enum.Font.GothamBold
+PercentLabel.Text = "0%"
+PercentLabel.TextColor3 = Color3.fromRGB(88, 101, 242)
+PercentLabel.TextSize = 20
+PercentLabel.Parent = LoaderContainer
+
+-- Música
+local Music = Instance.new("Sound")
+Music.SoundId = MUSIC_ID
+Music.Volume = 0.4
+Music.Looped = true
+Music.Parent = workspace
+Music:Play()
+
+-- Mensagens
+local messages = {
+    "Inicializando sistema...",
+    "Verificando permissões...",
+    "Carregando recursos...",
+    "Aplicando bypass...",
+    "Configurando interface...",
+    "Conectando ao servidor...",
+    "Preparando scripts...",
+    "Finalizando..."
+}
+
+-- Progresso
+local startTime = tick()
+spawn(function()
+    local msgIndex = 1
+    while tick() - startTime < LOADER_DURATION do
+        local elapsed = tick() - startTime
+        local progress = (elapsed / LOADER_DURATION) * 100
+        
+        ProgressBar.Size = UDim2.new(progress / 100, 0, 1, 0)
+        PercentLabel.Text = math.floor(progress) .. "%"
+        
+        if progress >= (msgIndex / #messages) * 100 and msgIndex <= #messages then
+            StatusLabel.Text = messages[msgIndex]
+            msgIndex = msgIndex + 1
+        end
+        
+        wait(0.05)
+    end
+    
+    PercentLabel.Text = "100%"
+    StatusLabel.Text = "✅ Completo!"
+    StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 150)
+    
+    wait(1)
+    Music:Stop()
+    Music:Destroy()
+    LoaderGui:Destroy()
+    
+    loadstring(game:HttpGet("SEU_LINK_DO_SCRIPT_PRINCIPAL"))()
+end)
