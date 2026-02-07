@@ -7,7 +7,7 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 
 -- Configurações
-local MUSIC_ID = "rbxassetid://136325435414595"
+local MUSIC_ID = "rbxassetid://1848354536"
 local LOADER_DURATION = 8
 
 -- Criar GUI
