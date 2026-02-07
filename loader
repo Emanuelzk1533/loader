@@ -32,24 +32,13 @@ LoaderContainer.Size = UDim2.new(0, 500, 0, 300)
 LoaderContainer.Parent = FullBackground
 
 -- Logo
-local LogoFrame = Instance.new("Frame")
-LogoFrame.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
-LogoFrame.BorderSizePixel = 0
-LogoFrame.Position = UDim2.new(0.5, -60, 0, 0)
-LogoFrame.Size = UDim2.new(0, 120, 0, 120)
-LogoFrame.Parent = LoaderContainer
-
-local LogoCorner = Instance.new("UICorner")
-LogoCorner.CornerRadius = UDim.new(0, 30)
-LogoCorner.Parent = LogoFrame
-
 local LogoIcon = Instance.new("ImageLabel")
 LogoIcon.BackgroundTransparency = 1
-LogoIcon.Position = UDim2.new(0.5, -40, 0.5, -40)
-LogoIcon.Size = UDim2.new(0, 80, 0, 80)
-LogoIcon.Image = "rbxassetid://14874672027"
-LogoIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
-LogoIcon.Parent = LogoFrame
+LogoIcon.Position = UDim2.new(0, 20, 0, 15)
+LogoIcon.Size = UDim2.new(0, 50, 0, 50)
+LogoIcon.Image = "rbxthumb://type=Asset&id=17230115865&w=420&h=420"
+LogoIcon.ZIndex = 10
+LogoIcon.Parent = Header
 
 -- Título
 local LoaderTitle = Instance.new("TextLabel")
